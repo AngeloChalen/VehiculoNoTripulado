@@ -25,26 +25,49 @@ El núcleo del controlador se basa en la búsqueda de espacios libres ("gaps") e
 
 * `senna.py`: Nodo principal del controlador FTG.
 * `lap_timer.py`: Herramienta de telemetría que calcula los tiempos de vuelta y detecta récords usando odometría.
+* `saopaulo.png` / `.yaml`: Archivos del mapa utilizado.
 
+
+## 🗺️ Configuración del Mapa (Map Setup)
+
+Para replicar los resultados, es necesario configurar el simulador con el mapa de Sao Paulo incluido en este repositorio.
+
+1.  Copia los archivos `saopaulo.png` y `saopaulo.yaml` a la carpeta de mapas del simulador:
+    `~/F1Tenth-Repository/src/f1tenth_gym_ros/maps/`
+
+2.  Edita el archivo de configuración `sim.yaml` (`.../f1tenth_gym_ros/config/sim.yaml`) con los siguientes parámetros:
+
+    ```yaml
+    # Ruta del mapa
+    map_path: '/home/TU_USUARIO/.../maps/saopaulo'
+    map_img_ext: '.png'
+
+    # Posición Inicial (Starting Pose) - CRÍTICO PARA NO CHOCAR AL INICIO
+    ego_pose_x: 28.46
+    ego_pose_y: 34.56
+    ego_pose_theta: -1.37
+    ```
 ## 🚀 Instrucciones de Ejecución
 
 Para ver el sistema completo en funcionamiento, necesitarás **3 terminales**:
 
 1.  **Terminal 1: Lanzar el Simulador**
     ```bash
+    colcon build
+    source install/setup.bash
     ros2 launch f1tenth_gym_ros gym_bridge_launch.py
     ```
-
-2.  **Terminal 2: Iniciar Telemetría (Cronómetro)**
+2.  **Terminal 2: Ejecutar el Controlador FTG**
+    Inicia el piloto automático:
+    ```bash
+    python3 senna.py
+3.  **Terminal 3: Iniciar Telemetría (Cronómetro)**
     Ejecuta este script antes de mover el auto para registrar los tiempos:
     ```bash
     python3 lap_timer.py
     ```
 
-3.  **Terminal 3: Ejecutar el Controlador FTG**
-    Inicia el piloto automático:
-    ```bash
-    python3 senna.py
+
     ```
 
 ## ⚙️ Parámetros de Tuning
